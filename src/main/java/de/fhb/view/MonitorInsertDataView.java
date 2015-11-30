@@ -1,6 +1,8 @@
 package de.fhb.view;
 
 import de.fhb.model.StationVo;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -13,7 +15,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -24,9 +26,11 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
     @FXML
     private ListView<StationVo> stationListView;
     @FXML
-    private TextField stationIDTextField = new TextField();
+    private TextField stationIDTextField;
     @FXML
     private TextField dateTextField;
+    @FXML
+    private TextField targetTextField;
     @FXML
     private TextField actualTextField;
     @FXML
@@ -45,6 +49,17 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
         this.stationIDTextField.setOnKeyReleased(enterHandler);
         this.dateTextField.setOnKeyReleased(enterHandler);
 
+        this.stationListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<StationVo>() {
+            @Override
+            public void changed(ObservableValue<? extends StationVo> observable, StationVo oldValue, StationVo newValue) {
+                if (newValue != null) {
+                    MonitorInsertDataView.this.stationIDTextField.setText(newValue.getName());
+                    MonitorInsertDataView.this.targetTextField.setText(String.valueOf(newValue.getTargetValue()));
+                    MonitorInsertDataView.this.dateTextField.setText(new SimpleDateFormat("dd.MM.yyyy").format(newValue.getDate()));
+                }
+            }
+        });
+
         this.changeViewBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                 if (event.getButton().equals(MouseButton.PRIMARY)) {
@@ -55,10 +70,6 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
     }
 
     public void updateStationList(List<StationVo> list) {
-        List<String> names = new ArrayList<>();
-        for (StationVo station : list) {
-            names.add(station.getName());
-        }
         ObservableList<StationVo> observableList = FXCollections.observableArrayList(list);
         this.stationListView.setItems(observableList);
     }
