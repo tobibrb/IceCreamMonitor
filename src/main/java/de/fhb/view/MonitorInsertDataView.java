@@ -1,6 +1,7 @@
 package de.fhb.view;
 
 import de.fhb.model.StationVo;
+import de.fhb.presenter.Presenter;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -27,9 +28,13 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /**
- * Created by Notebook on 23.11.2015.
+ * JavaFX Klasse zum Anzeigen der InsertDataView.
+ *
+ * Created on 23.11.2015.
  */
 public class MonitorInsertDataView extends AMonitorView implements Initializable {
+
+    // JavaFX Elemente
     @FXML
     private ListView<StationVo> stationListView;
     @FXML
@@ -47,22 +52,33 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
     @FXML
     private Button saveBtn;
 
+    // Logger
     private static final Logger log = LoggerFactory.getLogger(MonitorInsertDataView.class);
 
-    //************************//
-    //Methoden//
-    //***********************//
-
+    /**
+     * Methode zum Initialisieren der View
+     *
+     * @see Initializable
+     */
     public void initialize(URL location, ResourceBundle resources) {
 
+        // Listener für ListView
         stationListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<StationVo>() {
             @Override
             public void changed(ObservableValue<? extends StationVo> observable, StationVo oldValue, StationVo newValue) {
                 if (newValue != null) {
+
+                    // falls der Fokus nicht auf dem Feld ist und eine neue
+                    // Station geklickt wurde den Namen der Station aktualisieren
                     if (!stationIDTextField.isFocused() || (!newValue.equals(oldValue) && oldValue != null)) {
                         stationIDTextField.setText(newValue.getName());
                     }
+
+                    // Target TextField aktualisieren
                     targetTextField.setText(String.valueOf(newValue.getTargetValue()));
+
+                    // falls der Fokus nicht auf dem Feld ist
+                    // und eine neue Station geklickt wurde das Datum aktualisieren
                     if (!dateTextField.isFocused() || (!newValue.equals(oldValue) && oldValue != null)) {
                         if (newValue.getDate() != null) {
                             dateTextField.setText(new SimpleDateFormat("dd.MM.yyyy").format(newValue.getDate()));
@@ -70,23 +86,29 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
                             dateTextField.setText("");
                         }
                     }
+
+                    // falls der Fokus nicht auf dem Feld ist
+                    // und eine neue Station geklickt wurde den aktuellen Wert aktualisieren
                     if (!actualTextField.isFocused() || (!newValue.equals(oldValue) && oldValue != null)) {
-                        if (newValue.getActualValue() != null) {
+                        if (newValue.getActualValue() != null) { // nur wenn bereits ein aktueller Wert vorhanden
                             actualTextField.setText(String.valueOf(newValue.getActualValue()));
                         } else {
                             actualTextField.setText("");
                         }
                     }
+
+                    // falls Varianz vorhanden diese anzeigen
                     if (newValue.getVariance() != null) {
                         varianceTextField.setText(String.valueOf(newValue.getVariance()));
                     } else {
                         varianceTextField.setText("");
                     }
 
+                    // handle OnKeyReleased Event für Datums TextField
                     dateTextField.setOnKeyReleased(new EventHandler<KeyEvent>() {
                         @Override
                         public void handle(KeyEvent event) {
-                            if (event.getCode().equals(KeyCode.ENTER)) {
+                            if (event.getCode().equals(KeyCode.ENTER)) { // falls Enter gedrückt speichern
                                 if (validateDate(dateTextField.getText())) {
                                     try {
                                         newValue.setDate(new SimpleDateFormat("dd.MM.yyyy").parse(dateTextField.getText()));
@@ -95,50 +117,60 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
                                         log.error("Got Exception: " + e.getMessage());
                                     }
                                 } else {
+                                    // falls Datumsformat falsch, Tooltip anzeigen
                                     showTooltip(dateTextField, "Date format dd.MM.yyyy");
                                     dateTextField.setText(new SimpleDateFormat("dd.MM.yyyy").format(newValue.getDate()));
                                 }
                             } else {
+                                // Tooltip ausblenden sobald neue Eingabe erfolgt
                                 hideTooltip(dateTextField);
                             }
                         }
                     });
+
+                    // handle OnKeyReleased Event für actual TextField
                     actualTextField.setOnKeyReleased(new EventHandler<KeyEvent>() {
                         @Override
                         public void handle(KeyEvent event) {
-                            if (event.getCode() == KeyCode.ENTER) {
+                            if (event.getCode() == KeyCode.ENTER) { // falls Enter gedrückt speichern
+                                // falls hier was schief läuft, wird ein Tooltip angezeigt
                                 Integer newActualValue = validateActualValue(actualTextField.getText());
                                 if (newActualValue != null) {
                                     newValue.setActualValue(newActualValue);
                                     listener.onDataChanged(newValue);
                                 }
                             } else {
+                                // Tooltip ausblenden wenn andere Taste gedrückt wurde
                                 hideTooltip(actualTextField);
                             }
                         }
                     });
+
+                    // EventHandler für Speicher Button
                     saveBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
                         @Override
                         public void handle(MouseEvent event) {
-                            if (event.getButton().equals(MouseButton.PRIMARY)) {
+                            if (event.getButton().equals(MouseButton.PRIMARY)) { // falls primäre Maustaste
                                 if (!stationIDTextField.getText().isEmpty()) {
                                     newValue.setName(stationIDTextField.getText());
                                 }
                                 if (!actualTextField.getText().isEmpty()) {
+                                    // falls hier was schief läuft, wird ein Tooltip angezeigt
                                     Integer newActualValue = validateActualValue(actualTextField.getText());
-                                    if (newActualValue != null) {
+                                    if (newActualValue != null) { // falls parsen ok
                                         newValue.setActualValue(newActualValue);
                                         listener.onDataChanged(newValue);
                                     }
                                 }
                                 if (!dateTextField.getText().isEmpty()) {
-                                    if (validateDate(dateTextField.getText())) {
+                                    if (validateDate(dateTextField.getText())) { // prüfen ob Format stimmt
                                         try {
                                             newValue.setDate(new SimpleDateFormat("dd.MM.yyyy").parse(dateTextField.getText()));
                                         } catch (ParseException e) {
                                             log.error("Got Exception: " + e.getMessage());
                                         }
                                     } else {
+                                        // Tooltip anzeigen wenn Format falsch
                                         showTooltip(dateTextField, "Date format dd.MM.yyyy");
                                     }
                                 }
@@ -150,6 +182,7 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
             }
         });
 
+        // Button zum Ändern der View. Wird vom Presenter ausgeführt.
         changeViewBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                 if (event.getButton().equals(MouseButton.PRIMARY)) {
@@ -159,10 +192,30 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
         });
     }
 
+    /**
+     * Überprüft ob Datums String richtiges Format hat.
+     *
+     * @param date
+     * als String.
+     *
+     * @return
+     * <code>true</code> falls String korrekt oder
+     * <code>false</code> falls String nicht dem Format entspricht.
+     */
     private boolean validateDate(String date) {
         return date.matches("([0-9]{2}).([0-9]{2}).([0-9]{4})");
     }
 
+    /**
+     * Prüft ob der übergebende String zu einem Integer geparst werden kann und größer als 0 ist.
+     * Zeigt Tooltip falls beim Parsen ein Fehler auftritt.
+     *
+     * @param value
+     * String der geparst werden soll.
+     *
+     * @return
+     * geparster Integer wert oder <code>null</code>
+     */
     private Integer validateActualValue(String value) {
         Integer returnInt = null;
         try {
@@ -177,12 +230,14 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
         return returnInt;
     }
 
+    // Tooltip ausblenden
     private void hideTooltip(TextField field) {
         if (field.getTooltip() != null && field.getTooltip().isShowing()) {
             field.getTooltip().hide();
         }
     }
 
+    // Zeige bei falscher Eingabe ein Tooltip für die TextFields
     private void showTooltip(TextField field, String message) {
         Point2D p = field.localToScene(0.0, 0.0);
         Tooltip tooltip = new Tooltip(message);
@@ -195,17 +250,39 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
                 p.getY() + field.getScene().getY() + field.getScene().getWindow().getY() + 27);
     }
 
+    /**
+     * Aktualisiert die ListView. Wird vom Presenter aufgerufen.
+     *
+     * @see Presenter#onStationChanged()
+     *
+     * @param list
+     * Liste von StationVo Objekten, die in der View angezeigt werden sollen
+     */
+
     public void updateStationList(List<StationVo> list) {
         ObservableList<StationVo> observableList = FXCollections.observableArrayList(list);
         stationListView.setItems(observableList);
     }
 
+    /**
+     * Konstruktor für die MonitorInsertDataView Klasse.
+     *
+     * @param obj
+     * Die aufrufende Klasse. Diese muss den ViewListener implementieren.
+     *
+     * @throws ClassCastException
+     * wenn die übergebene Klasse nicht den ViewListener implementiert.
+     *
+     * @see ViewListener
+     */
     public MonitorInsertDataView(Object obj) {
         super(obj);
     }
 
+
+    // kann gelöscht werden
     @Override
     public void updateViewFromModel() {
-
+        // TODO: im Interface löschen wenn Toni nichts dagegen hat
     }
 }
