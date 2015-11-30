@@ -48,11 +48,6 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
     //***********************//
 
     public void initialize(URL location, ResourceBundle resources) {
-        EnterEventHandler enterHandler = new EnterEventHandler();
-
-        actualTextField.setOnKeyReleased(enterHandler);
-        stationIDTextField.setOnKeyReleased(enterHandler);
-        dateTextField.setOnKeyReleased(enterHandler);
 
         stationListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<StationVo>() {
             @Override
@@ -143,16 +138,6 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
     public void updateStationList(List<StationVo> list) {
         ObservableList<StationVo> observableList = FXCollections.observableArrayList(list);
         stationListView.setItems(observableList);
-    }
-
-    @FXML
-    private void onMOuseClickedChooseStation() {
-
-    }
-
-    @FXML
-    private void changeView() {
-
     }
 
     public MonitorInsertDataView(Object obj) {
