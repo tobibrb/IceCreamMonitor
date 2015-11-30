@@ -58,18 +58,18 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
             @Override
             public void changed(ObservableValue<? extends StationVo> observable, StationVo oldValue, StationVo newValue) {
                 if (newValue != null) {
-                    if (!stationIDTextField.isFocused()) {
+                    if (!stationIDTextField.isFocused() || (!newValue.equals(oldValue) && oldValue != null) ) {
                         stationIDTextField.setText(newValue.getName());
                     }
                     targetTextField.setText(String.valueOf(newValue.getTargetValue()));
-                    if (!dateTextField.isFocused()) {
+                    if (!dateTextField.isFocused() || (!newValue.equals(oldValue) && oldValue != null)) {
                         if (newValue.getDate() != null) {
                             dateTextField.setText(new SimpleDateFormat("dd.MM.yyyy").format(newValue.getDate()));
                         } else {
                             dateTextField.setText("");
                         }
                     }
-                    if (!actualTextField.isFocused()) {
+                    if (!actualTextField.isFocused() || (!newValue.equals(oldValue) && oldValue != null)) {
                         if (newValue.getActualValue() != null) {
                             actualTextField.setText(String.valueOf(newValue.getActualValue()));
                         } else {
