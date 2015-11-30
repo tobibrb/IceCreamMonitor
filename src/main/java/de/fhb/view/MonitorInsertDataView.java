@@ -60,13 +60,19 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
                     MonitorInsertDataView.this.targetTextField.setText(String.valueOf(newValue.getTargetValue()));
                     if (newValue.getDate() != null) {
                         MonitorInsertDataView.this.dateTextField.setText(new SimpleDateFormat("dd.MM.yyyy").format(newValue.getDate()));
+                    } else {
+                        MonitorInsertDataView.this.dateTextField.setText("");
                     }
                     if (newValue.getActualValue() != null) {
                         MonitorInsertDataView.this.actualTextField.setText(String.valueOf(newValue.getActualValue()));
+                    } else {
+                        MonitorInsertDataView.this.actualTextField.setText("");
                     }
 
                     if (newValue.getVariance() != null) {
                         MonitorInsertDataView.this.varianceTextField.setText(String.valueOf(newValue.getVariance()));
+                    } else {
+                        MonitorInsertDataView.this.varianceTextField.setText("");
                     }
 
                     MonitorInsertDataView.this.dateTextField.setOnKeyReleased(new EventHandler<KeyEvent>() {
