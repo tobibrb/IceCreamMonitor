@@ -13,6 +13,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -54,7 +55,11 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
     }
 
     public void updateStationList(List<StationVo> list) {
-        ObservableList<StationVo> observableList = FXCollections.observableArrayList(list);
+        List<String> names = new ArrayList<>();
+        for (StationVo station : list) {
+            names.add(station.getName());
+        }
+        ObservableList<String> observableList = FXCollections.observableArrayList(names);
         this.stationListView.setItems(observableList);
     }
 

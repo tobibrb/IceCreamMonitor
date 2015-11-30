@@ -11,6 +11,16 @@ public class StationBo implements IStationBo {
 
     private static List<StationVo> stationList = new ArrayList<>();
     private static List<StationListener> listeners = new ArrayList<>();
+    private static StationBo sInstance;
+
+    public static StationBo getInstance(Object obj) {
+        if (sInstance == null) {
+            return new StationBo(obj);
+        } else {
+            sInstance.onAttach(obj);
+            return sInstance;
+        }
+    }
 
     public StationBo(Object obj) {
         onAttach(obj);

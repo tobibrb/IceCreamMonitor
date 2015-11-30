@@ -19,14 +19,14 @@ public class IceCreamRandomizer implements Runnable, StationListener {
     private IStationBo stationBo;
     private static final Logger log = LoggerFactory.getLogger(IceCreamRandomizer.class);
 
-    public boolean shouldRun;
+    private boolean shouldRun;
 
     public void setShouldRun(boolean shouldRun) {
         this.shouldRun = shouldRun;
     }
 
     public IceCreamRandomizer() {
-        this.stationBo = new StationBo(this);
+        this.stationBo = StationBo.getInstance(this);
         shouldRun = true;
     }
 

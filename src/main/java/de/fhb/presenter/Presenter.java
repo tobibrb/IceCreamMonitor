@@ -9,6 +9,7 @@ import de.fhb.view.MonitorInsertDataView;
 import de.fhb.view.MonitorShowDataView;
 import de.fhb.view.ViewListener;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,16 +26,18 @@ public class Presenter extends Application implements ViewListener, StationListe
 
     private static Presenter sInstance;
     private IStationBo stationBo;
-    private AMonitorView monitorView;
+    private static AMonitorView monitorView;
     private Stage primaryStage;
     private int viewNumber = 1;
+    private IceCreamRandomizer randomizer;
 
     public Presenter() {
+        this.stationBo = StationBo.getInstance(this);
     }
 
     public Presenter(String[] args) {
         super();
-        this.stationBo = new StationBo(this);
+        this.stationBo = StationBo.getInstance(this);
         launch(args);
     }
 
@@ -51,17 +54,19 @@ public class Presenter extends Application implements ViewListener, StationListe
         this.primaryStage = primaryStage;
         log.info("Starting IceCreamMonitor application");
         changeView();
-        new Thread(new IceCreamRandomizer()).start();
+        randomizer = new IceCreamRandomizer();
+        new Thread(randomizer).start();
+
     }
 
-    private void changeView() throws Exception{
+    private void changeView() throws Exception {
         if (viewNumber == 0) {
 
             String fxmlFile = "/fxml/monitorShowDataView.fxml";
             log.debug(String.format("Loading FXML for MonitorShowDataView from: %s", fxmlFile));
             FXMLLoader loader = new FXMLLoader();
-            this.monitorView = new MonitorShowDataView(this);
-            loader.setController(this.monitorView);
+            monitorView = new MonitorShowDataView(this);
+            loader.setController(monitorView);
             Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
 
             log.debug("Showing MonitorShowDataView");
@@ -75,10 +80,11 @@ public class Presenter extends Application implements ViewListener, StationListe
         } else if (viewNumber == 1) {
 
             String fxmlFile = "/fxml/monitorInsertDataView.fxml";
-            log.debug(String.format("Loading FXML for MonitorInsertDataView from: %s", fxmlFile));;
+            log.debug(String.format("Loading FXML for MonitorInsertDataView from: %s", fxmlFile));
+            ;
             FXMLLoader loader = new FXMLLoader();
-            this.monitorView = new MonitorInsertDataView(this);
-            loader.setController(this.monitorView);
+            monitorView = new MonitorInsertDataView(this);
+            loader.setController(monitorView);
             Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
 
             log.debug("Showing MonitorInsertDataView");
@@ -90,6 +96,12 @@ public class Presenter extends Application implements ViewListener, StationListe
             this.primaryStage.show();
             viewNumber = 0;
         }
+    }
+
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        randomizer.setShouldRun(false);
     }
 
     // Methods for ViewListener
@@ -111,6 +123,11 @@ public class Presenter extends Application implements ViewListener, StationListe
     @Override
     public void onStationChanged() {
         log.debug("Daten geändert.");
-        this.monitorView.updateStationList(stationBo.findAll());
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                monitorView.updateStationList(stationBo.findAll());
+            }
+        });
     }
 }
