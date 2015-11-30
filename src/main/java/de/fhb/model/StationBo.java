@@ -9,17 +9,17 @@ import java.util.List;
  */
 public class StationBo implements IStationBo {
 
-    private static List<StationVo> stationList;
-    private StationListener listener;
+    private static List<StationVo> stationList = new ArrayList<>();
+    private static List<StationListener> listeners = new ArrayList<>();
 
     public StationBo(Object obj) {
-        stationList = new ArrayList<>();
         onAttach(obj);
     }
 
     private void onAttach(Object obj) {
         try {
-            listener = (StationListener) obj;
+            StationListener listener = (StationListener) obj;
+            listeners.add(listener);
         } catch (Exception e) {
             throw new ClassCastException(String.format("%s must implement %s", obj.getClass().getSimpleName(),
                     StationListener.class.getSimpleName()));
@@ -51,7 +51,7 @@ public class StationBo implements IStationBo {
     public void updateStationDate(Long id, Date date) {
         StationVo updateStation = findStationById(id);
         updateStation.setDate(date);
-        listener.onStationChanged();
+        notifyListeners();
     }
 
     @Override
@@ -59,19 +59,23 @@ public class StationBo implements IStationBo {
         StationVo updateStation = findStationById(id);
         updateStation.setActualValue(actualValue);
         updateStation.setVariance(updateStation.getTargetValue() - updateStation.getActualValue());
-        listener.onStationChanged();
+        notifyListeners();
     }
 
     @Override
     public void updateStationName(Long id, String name) {
         StationVo updateStation = findStationById(id);
         updateStation.setName(name);
-        listener.onStationChanged();
+        notifyListeners();
     }
 
     @Override
     public void addStation(String name, Integer targetValue) {
         stationList.add(new StationVo(name, targetValue));
-        listener.onStationChanged();
+        notifyListeners();
+    }
+
+    private void notifyListeners() {
+        listeners.forEach(StationListener::onStationChanged);
     }
 }
