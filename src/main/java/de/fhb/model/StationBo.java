@@ -68,7 +68,7 @@ public class StationBo implements IStationBo {
     public void updateStationValue(Long id, Integer actualValue) {
         StationVo updateStation = findStationById(id);
         updateStation.setActualValue(actualValue);
-        updateStation.setVariance(updateStation.getTargetValue() - updateStation.getActualValue());
+        updateStation.setVariance(updateStation.getActualValue() - updateStation.getTargetValue());
         notifyListeners();
     }
 
