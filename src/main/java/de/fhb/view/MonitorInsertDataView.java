@@ -50,34 +50,34 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
     public void initialize(URL location, ResourceBundle resources) {
         EnterEventHandler enterHandler = new EnterEventHandler();
 
-        this.actualTextField.setOnKeyReleased(enterHandler);
-        this.stationIDTextField.setOnKeyReleased(enterHandler);
-        this.dateTextField.setOnKeyReleased(enterHandler);
+        actualTextField.setOnKeyReleased(enterHandler);
+        stationIDTextField.setOnKeyReleased(enterHandler);
+        dateTextField.setOnKeyReleased(enterHandler);
 
-        this.stationListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<StationVo>() {
+        stationListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<StationVo>() {
             @Override
             public void changed(ObservableValue<? extends StationVo> observable, StationVo oldValue, StationVo newValue) {
                 if (newValue != null) {
-                    MonitorInsertDataView.this.stationIDTextField.setText(newValue.getName());
-                    MonitorInsertDataView.this.targetTextField.setText(String.valueOf(newValue.getTargetValue()));
+                    stationIDTextField.setText(newValue.getName());
+                    targetTextField.setText(String.valueOf(newValue.getTargetValue()));
                     if (newValue.getDate() != null) {
-                        MonitorInsertDataView.this.dateTextField.setText(new SimpleDateFormat("dd.MM.yyyy").format(newValue.getDate()));
+                        dateTextField.setText(new SimpleDateFormat("dd.MM.yyyy").format(newValue.getDate()));
                     } else {
-                        MonitorInsertDataView.this.dateTextField.setText("");
+                        dateTextField.setText("");
                     }
                     if (newValue.getActualValue() != null) {
-                        MonitorInsertDataView.this.actualTextField.setText(String.valueOf(newValue.getActualValue()));
+                        actualTextField.setText(String.valueOf(newValue.getActualValue()));
                     } else {
-                        MonitorInsertDataView.this.actualTextField.setText("");
+                        actualTextField.setText("");
                     }
 
                     if (newValue.getVariance() != null) {
-                        MonitorInsertDataView.this.varianceTextField.setText(String.valueOf(newValue.getVariance()));
+                        varianceTextField.setText(String.valueOf(newValue.getVariance()));
                     } else {
-                        MonitorInsertDataView.this.varianceTextField.setText("");
+                        varianceTextField.setText("");
                     }
 
-                    MonitorInsertDataView.this.dateTextField.setOnKeyReleased(new EventHandler<KeyEvent>() {
+                    dateTextField.setOnKeyReleased(new EventHandler<KeyEvent>() {
                         @Override
                         public void handle(KeyEvent event) {
                             if (event.getCode().equals(KeyCode.ENTER)) {
@@ -91,7 +91,7 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
                             }
                         }
                     });
-                    MonitorInsertDataView.this.actualTextField.setOnKeyReleased(new EventHandler<KeyEvent>() {
+                    actualTextField.setOnKeyReleased(new EventHandler<KeyEvent>() {
                         @Override
                         public void handle(KeyEvent event) {
                             if (event.getCode() == KeyCode.ENTER) {
@@ -100,7 +100,7 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
                             }
                         }
                     });
-                    MonitorInsertDataView.this.saveBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    saveBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
                         @Override
                         public void handle(MouseEvent event) {
                             if (event.getButton().equals(MouseButton.PRIMARY)) {
@@ -126,7 +126,7 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
             }
         });
 
-        this.changeViewBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        changeViewBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                 if (event.getButton().equals(MouseButton.PRIMARY)) {
                     listener.onViewChangeClicked();
@@ -137,7 +137,7 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
 
     public void updateStationList(List<StationVo> list) {
         ObservableList<StationVo> observableList = FXCollections.observableArrayList(list);
-        this.stationListView.setItems(observableList);
+        stationListView.setItems(observableList);
     }
 
     @FXML
