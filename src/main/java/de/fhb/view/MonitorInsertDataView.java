@@ -8,13 +8,17 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.text.ParseException;
@@ -43,6 +47,8 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
     @FXML
     private Button saveBtn;
 
+    private static final Logger log = LoggerFactory.getLogger(MonitorInsertDataView.class);
+
     //************************//
     //Methoden//
     //***********************//
@@ -53,7 +59,7 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
             @Override
             public void changed(ObservableValue<? extends StationVo> observable, StationVo oldValue, StationVo newValue) {
                 if (newValue != null) {
-                    if (!stationIDTextField.isFocused() || (!newValue.equals(oldValue) && oldValue != null) ) {
+                    if (!stationIDTextField.isFocused() || (!newValue.equals(oldValue) && oldValue != null)) {
                         stationIDTextField.setText(newValue.getName());
                     }
                     targetTextField.setText(String.valueOf(newValue.getTargetValue()));
@@ -81,13 +87,19 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
                         @Override
                         public void handle(KeyEvent event) {
                             if (event.getCode().equals(KeyCode.ENTER)) {
-                                try {
-                                    newValue.setDate(new SimpleDateFormat("dd.MM.yyyy").parse(dateTextField.getText()));
-                                    listener.onDataChanged(newValue);
-                                } catch (ParseException e) {
-                                    // TODO: Fehlermeldung!
-                                    e.printStackTrace();
+                                if (validateDate(dateTextField.getText())) {
+                                    try {
+                                        newValue.setDate(new SimpleDateFormat("dd.MM.yyyy").parse(dateTextField.getText()));
+                                        listener.onDataChanged(newValue);
+                                    } catch (ParseException e) {
+                                        log.error("Got Exception: " + e.getMessage());
+                                    }
+                                } else {
+                                    showTooltip(dateTextField, "Date format dd.MM.yyyy");
+                                    dateTextField.setText(new SimpleDateFormat("dd.MM.yyyy").format(newValue.getDate()));
                                 }
+                            } else {
+                                hideTooltip(dateTextField);
                             }
                         }
                     });
@@ -95,8 +107,13 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
                         @Override
                         public void handle(KeyEvent event) {
                             if (event.getCode() == KeyCode.ENTER) {
-                                newValue.setActualValue(Integer.parseInt(actualTextField.getText()));
-                                listener.onDataChanged(newValue);
+                                Integer newActualValue = validateActualValue(actualTextField.getText());
+                                if (newActualValue != null) {
+                                    newValue.setActualValue(newActualValue);
+                                    listener.onDataChanged(newValue);
+                                }
+                            } else {
+                                hideTooltip(actualTextField);
                             }
                         }
                     });
@@ -108,14 +125,21 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
                                     newValue.setName(stationIDTextField.getText());
                                 }
                                 if (!actualTextField.getText().isEmpty()) {
-                                    newValue.setActualValue(Integer.parseInt(actualTextField.getText()));
+                                    Integer newActualValue = validateActualValue(actualTextField.getText());
+                                    if (newActualValue != null) {
+                                        newValue.setActualValue(newActualValue);
+                                        listener.onDataChanged(newValue);
+                                    }
                                 }
                                 if (!dateTextField.getText().isEmpty()) {
-                                    try {
-                                        newValue.setDate(new SimpleDateFormat("dd.MM.yyyy").parse(dateTextField.getText()));
-                                    } catch (ParseException e) {
-                                        // TODO: Fehlermeldung!
-                                        e.printStackTrace();
+                                    if (validateDate(dateTextField.getText())) {
+                                        try {
+                                            newValue.setDate(new SimpleDateFormat("dd.MM.yyyy").parse(dateTextField.getText()));
+                                        } catch (ParseException e) {
+                                            log.error("Got Exception: " + e.getMessage());
+                                        }
+                                    } else {
+                                        showTooltip(dateTextField, "Date format dd.MM.yyyy");
                                     }
                                 }
                                 listener.onDataChanged(newValue);
@@ -133,6 +157,42 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
                 }
             }
         });
+    }
+
+    private boolean validateDate(String date) {
+        return date.matches("([0-9]{2}).([0-9]{2}).([0-9]{4})");
+    }
+
+    private Integer validateActualValue(String value) {
+        Integer returnInt = null;
+        try {
+            if (Integer.parseInt(value) < 0) {
+                showTooltip(actualTextField, "The value must be greater 0.");
+            } else {
+                returnInt = Integer.parseInt(value);
+            }
+        } catch (NumberFormatException e) {
+            showTooltip(actualTextField, "Please enter a number greater 0.");
+        }
+        return returnInt;
+    }
+
+    private void hideTooltip(TextField field) {
+        if (field.getTooltip() != null && field.getTooltip().isShowing()) {
+            field.getTooltip().hide();
+        }
+    }
+
+    private void showTooltip(TextField field, String message) {
+        Point2D p = field.localToScene(0.0, 0.0);
+        Tooltip tooltip = new Tooltip(message);
+        if (field.getTooltip() != null) {
+            field.getTooltip().hide();
+        }
+        field.setTooltip(tooltip);
+        tooltip.show(field,
+                p.getX() + field.getScene().getX() + field.getScene().getWindow().getX(),
+                p.getY() + field.getScene().getY() + field.getScene().getWindow().getY() + 27);
     }
 
     public void updateStationList(List<StationVo> list) {

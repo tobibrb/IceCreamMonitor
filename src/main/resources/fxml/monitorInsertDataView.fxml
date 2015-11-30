@@ -8,7 +8,7 @@
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <ListView fx:id="stationListView" onMouseClicked="#onMOuseClickedChooseStation" prefHeight="200.0" prefWidth="200.0">
+            <ListView fx:id="stationListView" prefHeight="200.0" prefWidth="200.0">
                <HBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </HBox.margin>
@@ -68,7 +68,7 @@
                                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                  </VBox.margin>
                               </Label>
-                              <Button fx:id="changeViewBtn" mnemonicParsing="false" onAction="#changeView" text="Change View" textAlignment="CENTER">
+                              <Button fx:id="changeViewBtn" mnemonicParsing="false" text="Change View" textAlignment="CENTER">
                                  <VBox.margin>
                                     <Insets bottom="20.0" left="20.0" right="20.0" top="200.0" />
                                  </VBox.margin>
