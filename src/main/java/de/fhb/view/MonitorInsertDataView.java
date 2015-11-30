@@ -40,6 +40,8 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
     private TextField varianceTextField;
     @FXML
     private Button changeViewBtn;
+    @FXML
+    private Button saveBtn;
 
     //************************//
     //Methoden//
@@ -83,6 +85,7 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
                                     newValue.setDate(new SimpleDateFormat("dd.MM.yyyy").parse(dateTextField.getText()));
                                     listener.onDataChanged(newValue);
                                 } catch (ParseException e) {
+                                    // TODO: Fehlermeldung!
                                     e.printStackTrace();
                                 }
                             }
@@ -93,6 +96,28 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
                         public void handle(KeyEvent event) {
                             if (event.getCode() == KeyCode.ENTER) {
                                 newValue.setActualValue(Integer.parseInt(actualTextField.getText()));
+                                listener.onDataChanged(newValue);
+                            }
+                        }
+                    });
+                    MonitorInsertDataView.this.saveBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            if (event.getButton().equals(MouseButton.PRIMARY)) {
+                                if (!stationIDTextField.getText().isEmpty()) {
+                                    newValue.setName(stationIDTextField.getText());
+                                }
+                                if (!actualTextField.getText().isEmpty()) {
+                                    newValue.setActualValue(Integer.parseInt(actualTextField.getText()));
+                                }
+                                if (!dateTextField.getText().isEmpty()) {
+                                    try {
+                                        newValue.setDate(new SimpleDateFormat("dd.MM.yyyy").parse(dateTextField.getText()));
+                                    } catch (ParseException e) {
+                                        // TODO: Fehlermeldung!
+                                        e.printStackTrace();
+                                    }
+                                }
                                 listener.onDataChanged(newValue);
                             }
                         }
