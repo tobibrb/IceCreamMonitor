@@ -1,10 +1,13 @@
 package de.fhb.view;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -36,8 +39,16 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
         this.actualTextField.setOnKeyReleased(enterHandler);
         this.stationIDTextField.setOnKeyReleased(enterHandler);
         this.dateTextField.setOnKeyReleased(enterHandler);
-    }
 
+        this.changeViewBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getButton().equals(MouseButton.PRIMARY)) {
+                    listener.onViewChangeClicked();
+                }
+            }
+        });
+    }
 
     @FXML
     private void onMOuseClickedChooseStation(){

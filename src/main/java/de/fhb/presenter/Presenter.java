@@ -3,6 +3,7 @@ package de.fhb.presenter;
 import de.fhb.model.IStationBo;
 import de.fhb.view.AMonitorView;
 import de.fhb.view.MonitorInsertDataView;
+import de.fhb.view.MonitorShowDataView;
 import de.fhb.view.ViewListener;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -21,7 +22,9 @@ public class Presenter extends Application implements ViewListener {
 
     private static Presenter sInstance;
     private IStationBo stationBo;
-    private AMonitorView view;
+    private AMonitorView monitorView;
+    private Stage primaryStage;
+    private int viewNumber = 1;
 
     public Presenter() {}
 
@@ -39,28 +42,56 @@ public class Presenter extends Application implements ViewListener {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        log.info("Starting Hello JavaFX and Maven demonstration application");
+        this.primaryStage = primaryStage;
+        log.info("Starting IceCreamMonitor application");
+        changeView();
+    }
 
-        String fxmlFile = "/fxml/monitorInsertDataView.fxml";
-        log.debug("Loading FXML for main view from: {}", fxmlFile);
-        FXMLLoader loader = new FXMLLoader();
-        MonitorInsertDataView monitor = new MonitorInsertDataView(this);
-        loader.setController(monitor);
-        Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
+    private void changeView() throws Exception{
+        if (viewNumber == 0) {
 
-        log.debug("Showing JFX scene");
-        Scene scene = new Scene(rootNode, 800, 600);
-        scene.getStylesheets().add("/styles/styles.css");
+            String fxmlFile = "/fxml/monitorShowDataView.fxml";
+            log.debug(String.format("Loading FXML for MonitorShowDataView from: %s", fxmlFile));
+            FXMLLoader loader = new FXMLLoader();
+            this.monitorView = new MonitorShowDataView(this);
+            Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
 
-        primaryStage.setTitle("Hello JavaFX and Maven");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+            log.debug("Showing MonitorShowDataView");
+            Scene scene = new Scene(rootNode, 800, 600);
+            scene.getStylesheets().add("/styles/styles.css");
+            this.primaryStage.setTitle("Show Data View");
+            this.primaryStage.setScene(scene);
+            this.primaryStage.show();
+
+            viewNumber = 1;
+        } else if (viewNumber == 1) {
+
+            String fxmlFile = "/fxml/monitorInsertDataView.fxml";
+            log.debug(String.format("Loading FXML for MonitorInsertDataView from: %s", fxmlFile));;
+            FXMLLoader loader = new FXMLLoader();
+            this.monitorView = new MonitorInsertDataView(this);
+            loader.setController(this.monitorView);
+            Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
+
+            log.debug("Showing MonitorInsertDataView");
+            Scene scene = new Scene(rootNode, 800, 600);
+            scene.getStylesheets().add("/styles/styles.css");
+
+            this.primaryStage.setTitle("Insert Data View");
+            this.primaryStage.setScene(scene);
+            this.primaryStage.show();
+            viewNumber = 0;
+        }
     }
 
     // Methods for ViewListener
     @Override
     public void onViewChangeClicked() {
-
+        try {
+            changeView();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
