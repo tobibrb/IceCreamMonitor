@@ -1,6 +1,7 @@
 package de.fhb.presenter;
 
 import de.fhb.model.IStationBo;
+import de.fhb.model.StationListener;
 import de.fhb.view.AMonitorView;
 import de.fhb.view.MonitorInsertDataView;
 import de.fhb.view.MonitorShowDataView;
@@ -16,7 +17,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by Tobi on 30.11.2015.
  */
-public class Presenter extends Application implements ViewListener {
+public class Presenter extends Application implements ViewListener, StationListener {
 
     private static final Logger log = LoggerFactory.getLogger(Presenter.class);
 
@@ -96,6 +97,12 @@ public class Presenter extends Application implements ViewListener {
 
     @Override
     public void onDataChanged() {
+
+    }
+
+    // Methods for StationListener
+    @Override
+    public void onStationChanged() {
 
     }
 }

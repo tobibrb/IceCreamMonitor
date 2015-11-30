@@ -2,6 +2,7 @@ package de.fhb.system;
 
 import de.fhb.model.IStationBo;
 import de.fhb.model.StationBo;
+import de.fhb.model.StationListener;
 import org.apache.commons.lang.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,7 @@ import static java.lang.Thread.sleep;
 /**
  * Created by Tobi on 30.11.2015.
  */
-public class IceCreamRandomizer implements Runnable {
+public class IceCreamRandomizer implements Runnable, StationListener {
 
     private IStationBo stationBo;
     private static final Logger log = LoggerFactory.getLogger(IceCreamRandomizer.class);
@@ -25,7 +26,7 @@ public class IceCreamRandomizer implements Runnable {
     }
 
     public IceCreamRandomizer() {
-        this.stationBo = new StationBo();
+        this.stationBo = new StationBo(this);
         shouldRun = true;
     }
 
@@ -44,5 +45,10 @@ public class IceCreamRandomizer implements Runnable {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onStationChanged() {
+
     }
 }

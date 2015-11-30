@@ -10,9 +10,20 @@ import java.util.List;
 public class StationBo implements IStationBo {
 
     private static List<StationVo> stationList;
+    private StationListener listener;
 
-    public StationBo() {
+    public StationBo(Object obj) {
         stationList = new ArrayList<>();
+        onAttach(obj);
+    }
+
+    private void onAttach(Object obj) {
+        try {
+            listener = (StationListener) obj;
+        } catch (Exception e) {
+            throw new ClassCastException(String.format("%s must implement %s", obj.getClass().getSimpleName(),
+                    StationListener.class.getSimpleName()));
+        }
     }
 
     @Override
@@ -40,6 +51,7 @@ public class StationBo implements IStationBo {
     public void updateStationDate(Long id, Date date) {
         StationVo updateStation = findStationById(id);
         updateStation.setDate(date);
+        listener.onStationChanged();
     }
 
     @Override
@@ -47,16 +59,19 @@ public class StationBo implements IStationBo {
         StationVo updateStation = findStationById(id);
         updateStation.setActualValue(actualValue);
         updateStation.setVariance(updateStation.getTargetValue() - updateStation.getActualValue());
+        listener.onStationChanged();
     }
 
     @Override
     public void updateStationName(Long id, String name) {
         StationVo updateStation = findStationById(id);
         updateStation.setName(name);
+        listener.onStationChanged();
     }
 
     @Override
     public void addStation(String name, Integer targetValue) {
         stationList.add(new StationVo(name, targetValue));
+        listener.onStationChanged();
     }
 }
