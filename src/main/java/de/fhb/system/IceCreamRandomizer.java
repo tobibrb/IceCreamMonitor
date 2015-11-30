@@ -49,6 +49,6 @@ public class IceCreamRandomizer implements Runnable, StationListener {
 
     @Override
     public void onStationChanged() {
-
+        // Nichts zu tun hier
     }
 }

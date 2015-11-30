@@ -1,6 +1,7 @@
 package de.fhb.presenter;
 
 import de.fhb.model.IStationBo;
+import de.fhb.model.StationBo;
 import de.fhb.model.StationListener;
 import de.fhb.view.AMonitorView;
 import de.fhb.view.MonitorInsertDataView;
@@ -30,6 +31,7 @@ public class Presenter extends Application implements ViewListener, StationListe
     public Presenter() {}
 
     public Presenter(String[] args) {
+        this.stationBo = new StationBo(this);
         launch(args);
     }
 
@@ -103,6 +105,6 @@ public class Presenter extends Application implements ViewListener, StationListe
     // Methods for StationListener
     @Override
     public void onStationChanged() {
-
+        log.debug("Daten geändert.");
     }
 }
