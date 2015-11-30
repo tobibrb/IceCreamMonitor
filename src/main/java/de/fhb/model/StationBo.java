@@ -15,11 +15,11 @@ public class StationBo implements IStationBo {
 
     public static StationBo getInstance(Object obj) {
         if (sInstance == null) {
-            return new StationBo(obj);
+            sInstance = new StationBo(obj);
         } else {
             sInstance.onAttach(obj);
-            return sInstance;
         }
+        return sInstance;
     }
 
     public StationBo(Object obj) {

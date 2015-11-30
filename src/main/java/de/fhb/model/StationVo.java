@@ -70,4 +70,9 @@ public class StationVo implements Serializable {
     protected void setVariance(Integer variance) {
         this.variance = variance;
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

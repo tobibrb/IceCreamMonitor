@@ -20,9 +20,9 @@ import java.util.ResourceBundle;
 /**
  * Created by Notebook on 23.11.2015.
  */
-public class MonitorInsertDataView extends AMonitorView implements Initializable{
+public class MonitorInsertDataView extends AMonitorView implements Initializable {
     @FXML
-    private ListView stationListView;
+    private ListView<StationVo> stationListView;
     @FXML
     private TextField stationIDTextField = new TextField();
     @FXML
@@ -59,21 +59,22 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
         for (StationVo station : list) {
             names.add(station.getName());
         }
-        ObservableList<String> observableList = FXCollections.observableArrayList(names);
+        ObservableList<StationVo> observableList = FXCollections.observableArrayList(list);
         this.stationListView.setItems(observableList);
     }
 
     @FXML
-    private void onMOuseClickedChooseStation(){
+    private void onMOuseClickedChooseStation() {
 
     }
+
     @FXML
-    private void changeView(){
+    private void changeView() {
 
     }
 
     public MonitorInsertDataView(Object obj) {
-    super(obj);
+        super(obj);
     }
 
     @Override
