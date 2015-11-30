@@ -41,7 +41,6 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
         this.dateTextField.setOnKeyReleased(enterHandler);
 
         this.changeViewBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
             public void handle(MouseEvent event) {
                 if (event.getButton().equals(MouseButton.PRIMARY)) {
                     listener.onViewChangeClicked();

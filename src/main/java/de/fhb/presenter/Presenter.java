@@ -57,6 +57,7 @@ public class Presenter extends Application implements ViewListener, StationListe
             log.debug(String.format("Loading FXML for MonitorShowDataView from: %s", fxmlFile));
             FXMLLoader loader = new FXMLLoader();
             this.monitorView = new MonitorShowDataView(this);
+            loader.setController(this.monitorView);
             Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
 
             log.debug("Showing MonitorShowDataView");
