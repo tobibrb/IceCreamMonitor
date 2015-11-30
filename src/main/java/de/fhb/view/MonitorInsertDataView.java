@@ -11,10 +11,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -55,7 +58,39 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
                 if (newValue != null) {
                     MonitorInsertDataView.this.stationIDTextField.setText(newValue.getName());
                     MonitorInsertDataView.this.targetTextField.setText(String.valueOf(newValue.getTargetValue()));
-                    MonitorInsertDataView.this.dateTextField.setText(new SimpleDateFormat("dd.MM.yyyy").format(newValue.getDate()));
+                    if (newValue.getDate() != null) {
+                        MonitorInsertDataView.this.dateTextField.setText(new SimpleDateFormat("dd.MM.yyyy").format(newValue.getDate()));
+                    }
+                    if (newValue.getActualValue() != null) {
+                        MonitorInsertDataView.this.actualTextField.setText(String.valueOf(newValue.getActualValue()));
+                    }
+
+                    if (newValue.getVariance() != null) {
+                        MonitorInsertDataView.this.varianceTextField.setText(String.valueOf(newValue.getVariance()));
+                    }
+
+                    MonitorInsertDataView.this.dateTextField.setOnKeyReleased(new EventHandler<KeyEvent>() {
+                        @Override
+                        public void handle(KeyEvent event) {
+                            if (event.getCode().equals(KeyCode.ENTER)) {
+                                try {
+                                    newValue.setDate(new SimpleDateFormat("dd.MM.yyyy").parse(dateTextField.getText()));
+                                    listener.onDataChanged(newValue);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    });
+                    MonitorInsertDataView.this.actualTextField.setOnKeyReleased(new EventHandler<KeyEvent>() {
+                        @Override
+                        public void handle(KeyEvent event) {
+                            if (event.getCode() == KeyCode.ENTER) {
+                                newValue.setActualValue(Integer.parseInt(actualTextField.getText()));
+                                listener.onDataChanged(newValue);
+                            }
+                        }
+                    });
                 }
             }
         });

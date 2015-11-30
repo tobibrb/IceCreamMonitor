@@ -3,6 +3,7 @@ package de.fhb.presenter;
 import de.fhb.model.IStationBo;
 import de.fhb.model.StationBo;
 import de.fhb.model.StationListener;
+import de.fhb.model.StationVo;
 import de.fhb.system.IceCreamRandomizer;
 import de.fhb.view.AMonitorView;
 import de.fhb.view.MonitorInsertDataView;
@@ -115,8 +116,16 @@ public class Presenter extends Application implements ViewListener, StationListe
     }
 
     @Override
-    public void onDataChanged() {
-
+    public void onDataChanged(StationVo station) {
+        if (station.getDate() != null) {
+            stationBo.updateStationDate(station.getId(), station.getDate());
+        }
+        if (station.getActualValue() != null) {
+            stationBo.updateStationValue(station.getId(), station.getActualValue());
+        }
+        if (station.getName() != null) {
+            stationBo.updateStationName(station.getId(), station.getName());
+        }
     }
 
     // Methods for StationListener
