@@ -11,19 +11,19 @@ public class StationVo implements Serializable {
     private static Long nextId = 0L;
     private Long id;
     private String name;
-    private Float targetValue;
-    private Float actualValue;
+    private Integer targetValue;
+    private Integer actualValue;
     private Integer variance;
     private Date date;
 
-    public StationVo(String name, Float targetValue, Float actualValue, Integer variance, Date date) {
+    public StationVo(String name, Integer targetValue, Integer actualValue, Integer variance, Date date) {
         this(name, targetValue);
         this.actualValue = actualValue;
         this.variance = variance;
         this.date = date;
     }
 
-    public StationVo(String name, Float targetValue) {
+    public StationVo(String name, Integer targetValue) {
         this.id = nextId;
         this.name = name;
         this.targetValue = targetValue;
@@ -39,11 +39,11 @@ public class StationVo implements Serializable {
         return name;
     }
 
-    public Float getTargetValue() {
+    public Integer getTargetValue() {
         return targetValue;
     }
 
-    public Float getActualValue() {
+    public Integer getActualValue() {
         return actualValue;
     }
 
@@ -59,11 +59,15 @@ public class StationVo implements Serializable {
         this.name = name;
     }
 
-    public void setActualValue(Float actualValue) {
+    public void setActualValue(Integer actualValue) {
         this.actualValue = actualValue;
     }
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    protected void setVariance(Integer variance) {
+        this.variance = variance;
     }
 }

@@ -1,6 +1,8 @@
 package de.fhb.view;
 
-public abstract class AMonitorView {
+import javafx.fxml.Initializable;
+
+public abstract class AMonitorView implements Initializable{
 
     protected ViewListener listener;
 
