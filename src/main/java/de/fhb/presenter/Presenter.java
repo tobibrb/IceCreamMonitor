@@ -3,6 +3,7 @@ package de.fhb.presenter;
 import de.fhb.model.IStationBo;
 import de.fhb.model.StationBo;
 import de.fhb.model.StationListener;
+import de.fhb.system.IceCreamRandomizer;
 import de.fhb.view.AMonitorView;
 import de.fhb.view.MonitorInsertDataView;
 import de.fhb.view.MonitorShowDataView;
@@ -28,9 +29,11 @@ public class Presenter extends Application implements ViewListener, StationListe
     private Stage primaryStage;
     private int viewNumber = 1;
 
-    public Presenter() {}
+    public Presenter() {
+    }
 
     public Presenter(String[] args) {
+        super();
         this.stationBo = new StationBo(this);
         launch(args);
     }
@@ -48,6 +51,7 @@ public class Presenter extends Application implements ViewListener, StationListe
         this.primaryStage = primaryStage;
         log.info("Starting IceCreamMonitor application");
         changeView();
+        new Thread(new IceCreamRandomizer()).start();
     }
 
     private void changeView() throws Exception{
@@ -107,5 +111,6 @@ public class Presenter extends Application implements ViewListener, StationListe
     @Override
     public void onStationChanged() {
         log.debug("Daten geändert.");
+        this.monitorView.updateStationList(stationBo.findAll());
     }
 }

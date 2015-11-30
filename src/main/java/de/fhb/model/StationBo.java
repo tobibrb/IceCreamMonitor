@@ -76,6 +76,8 @@ public class StationBo implements IStationBo {
     }
 
     private void notifyListeners() {
-        listeners.forEach(StationListener::onStationChanged);
+        for (StationListener listener : listeners) {
+            listener.onStationChanged();
+        }
     }
 }

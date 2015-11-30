@@ -34,16 +34,16 @@ public class IceCreamRandomizer implements Runnable, StationListener {
     public void run() {
 
         while (shouldRun) {
-            String name = RandomStringUtils.randomAlphanumeric(6).toUpperCase();
             Random rand = new Random();
-            int randomNum = rand.nextInt((75 - 25) + 1) + 25;
-            stationBo.addStation(name, randomNum);
-            log.debug("Created Station: " + name);
             try {
                 sleep(Math.abs(rand.nextLong()) % 10000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            String name = RandomStringUtils.randomAlphanumeric(6).toUpperCase();
+            int randomNum = rand.nextInt((75 - 25) + 1) + 25;
+            stationBo.addStation(name, randomNum);
+            log.debug("Created Station: " + name);
         }
     }
 

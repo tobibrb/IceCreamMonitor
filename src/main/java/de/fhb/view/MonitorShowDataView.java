@@ -1,16 +1,17 @@
 package de.fhb.view;
 
+import de.fhb.model.StationVo;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.SortEvent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -40,6 +41,11 @@ public class MonitorShowDataView extends AMonitorView implements Initializable {
 
     @Override
     public void updateViewFromModel() {
+
+    }
+
+    @Override
+    public void updateStationList(List<StationVo> list) {
 
     }
 

@@ -1,6 +1,9 @@
 package de.fhb.view;
 
+import de.fhb.model.StationVo;
 import javafx.fxml.Initializable;
+
+import java.util.List;
 
 public abstract class AMonitorView implements Initializable{
 
@@ -20,6 +23,7 @@ public abstract class AMonitorView implements Initializable{
     }
 
     public abstract void updateViewFromModel();
+    public abstract void updateStationList(List<StationVo> list);
 
 
 }
