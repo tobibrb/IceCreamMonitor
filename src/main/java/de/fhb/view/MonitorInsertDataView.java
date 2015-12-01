@@ -100,9 +100,9 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
                     // falls Varianz vorhanden diese anzeigen
                     if (newValue.getVariance() != null) {
                         varianceTextField.setText(String.valueOf(newValue.getVariance()));
-                        if (newValue.getActualValue() * 100 / newValue.getTargetValue() < 90) {
+                        if (newValue.getActualValue() * 100 / newValue.getTargetValue() <= 90) {
                             varianceTextField.setStyle("-fx-text-fill: red;"); // 10% unter target
-                        } else if (newValue.getActualValue() * 100 / newValue.getTargetValue() > 105) {
+                        } else if (newValue.getActualValue() * 100 / newValue.getTargetValue() >= 105) {
                             varianceTextField.setStyle("-fx-text-fill: green;"); // 5% über target
                         } else {
                             varianceTextField.setStyle("-fx-text-fill: black;"); // standard
