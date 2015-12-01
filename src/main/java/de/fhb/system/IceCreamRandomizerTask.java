@@ -19,15 +19,19 @@ public class IceCreamRandomizerTask extends TimerTask implements StationListener
     private static Timer timer = new Timer();
     private static boolean shouldRun = true;
     private static IStationBo stationBo;
+    private static IceCreamRandomizerTask sInstance;
 
     private static final Logger log = LoggerFactory.getLogger(IceCreamRandomizerTask.class);
 
     public IceCreamRandomizerTask() {
+        sInstance = this;
         stationBo = StationBo.getInstance(this);
     }
 
-    public static void setShouldRun(boolean shouldRun) {
-        IceCreamRandomizerTask.shouldRun = shouldRun;
+    public static void stop() {
+        shouldRun = false;
+        timer.cancel();
+        sInstance.cancel();
     }
 
     @Override

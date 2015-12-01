@@ -16,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,16 +97,19 @@ public class Presenter extends Application implements ViewListener, StationListe
             this.primaryStage.show();
             viewNumber = 0;
             monitorView.updateStationList(stationBo.findAll());
+            primaryStage.setOnCloseRequest(event -> {
+                if (event.getEventType() == WindowEvent.WINDOW_CLOSE_REQUEST) {
+                    Platform.exit();
+                }
+            });
         }
     }
 
     @Override
     public void stop() throws Exception {
         super.stop();
-        IceCreamRandomizerTask.setShouldRun(false);
-
+        IceCreamRandomizerTask.stop();
         Notification.Notifier.INSTANCE.stop();
-
     }
 
     // Methods for ViewListener
@@ -136,13 +140,10 @@ public class Presenter extends Application implements ViewListener, StationListe
     @Override
     public void onStationChanged() {
         log.debug("Daten geändert.");
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                monitorView.updateStationList(stationBo.findAll());
-                Notification.Notifier.INSTANCE.notifyInfo("Info", "New Station added");
-
-            }
+        Platform.runLater(() -> {
+            monitorView.updateStationList(stationBo.findAll());
+            Notification.Notifier.INSTANCE.notifyInfo("Info", "New Station added");
+            primaryStage.toFront();
         });
     }
 }
