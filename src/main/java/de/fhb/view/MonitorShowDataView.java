@@ -1,8 +1,6 @@
 package de.fhb.view;
 
 import de.fhb.model.StationVo;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -15,14 +13,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 
 import java.net.URL;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Created by Tobi on 30.11.2015.
@@ -51,11 +49,6 @@ public class MonitorShowDataView extends AMonitorView implements Initializable {
 
     public MonitorShowDataView(Object obj) {
         super(obj);
-    }
-
-    @Override
-    public void updateViewFromModel() {
-
     }
 
     @Override

@@ -22,7 +22,6 @@ public abstract class AMonitorView implements Initializable{
         }
     }
 
-    public abstract void updateViewFromModel();
     public abstract void updateStationList(List<StationVo> list);
 
 
