@@ -4,7 +4,6 @@ import de.fhb.model.IStationBo;
 import de.fhb.model.StationBo;
 import de.fhb.model.StationListener;
 import de.fhb.model.StationVo;
-import de.fhb.system.IceCreamRandomizer;
 import de.fhb.system.IceCreamRandomizerTask;
 import de.fhb.view.AMonitorView;
 import de.fhb.view.MonitorInsertDataView;
@@ -32,7 +31,6 @@ public class Presenter extends Application implements ViewListener, StationListe
     private static AMonitorView monitorView;
     private Stage primaryStage;
     private int viewNumber = 1;
-    private IceCreamRandomizer randomizer;
 
     public Presenter() {
         this.stationBo = StationBo.getInstance(this);
@@ -46,10 +44,9 @@ public class Presenter extends Application implements ViewListener, StationListe
 
     public static Presenter getInstance() {
         if (sInstance == null) {
-            return new Presenter(null);
-        } else {
-            return sInstance;
+            sInstance = new Presenter(null);
         }
+        return sInstance;
     }
 
     @Override
@@ -57,9 +54,7 @@ public class Presenter extends Application implements ViewListener, StationListe
         this.primaryStage = primaryStage;
         log.info("Starting IceCreamMonitor application");
         changeView();
-        randomizer = new IceCreamRandomizer();
         new IceCreamRandomizerTask().run();
-        //new Thread(randomizer).start();
 
     }
 
@@ -107,7 +102,6 @@ public class Presenter extends Application implements ViewListener, StationListe
     @Override
     public void stop() throws Exception {
         super.stop();
-        // randomizer.setShouldRun(false);
         IceCreamRandomizerTask.setShouldRun(false);
 
         Notification.Notifier.INSTANCE.stop();
