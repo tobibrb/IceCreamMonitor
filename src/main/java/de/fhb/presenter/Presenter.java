@@ -5,6 +5,7 @@ import de.fhb.model.StationBo;
 import de.fhb.model.StationListener;
 import de.fhb.model.StationVo;
 import de.fhb.system.IceCreamRandomizer;
+import de.fhb.system.IceCreamRandomizerTask;
 import de.fhb.view.AMonitorView;
 import de.fhb.view.MonitorInsertDataView;
 import de.fhb.view.MonitorShowDataView;
@@ -56,7 +57,8 @@ public class Presenter extends Application implements ViewListener, StationListe
         log.info("Starting IceCreamMonitor application");
         changeView();
         randomizer = new IceCreamRandomizer();
-        new Thread(randomizer).start();
+        new IceCreamRandomizerTask().run();
+        //new Thread(randomizer).start();
 
     }
 

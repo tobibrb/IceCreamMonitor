@@ -270,6 +270,7 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
      */
 
     public void updateStationList(List<StationVo> list) {
+        log.debug("Updating ListView");
         ObservableList<StationVo> observableList = FXCollections.observableArrayList(list);
         stationListView.setItems(observableList);
     }
