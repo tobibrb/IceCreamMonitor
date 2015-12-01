@@ -7,7 +7,6 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -36,4 +35,11 @@
          </BorderPane.margin>
       </Button>
    </bottom>
+   <top>
+      <ChoiceBox fx:id="choiceBox" prefWidth="150.0" BorderPane.alignment="CENTER_RIGHT">
+         <BorderPane.margin>
+            <Insets left="20.0" right="20.0" top="20.0" />
+         </BorderPane.margin>
+      </ChoiceBox>
+   </top>
 </BorderPane>
