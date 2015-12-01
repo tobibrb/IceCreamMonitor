@@ -2,6 +2,7 @@ package de.fhb.view;
 
 import de.fhb.model.StationVo;
 import de.fhb.presenter.Presenter;
+import eu.hansolo.enzo.notification.Notification;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -61,6 +62,7 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
      * @see Initializable
      */
     public void initialize(URL location, ResourceBundle resources) {
+
 
         // Listener für ListView
         stationListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<StationVo>() {

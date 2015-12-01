@@ -10,6 +10,7 @@ import de.fhb.view.AMonitorView;
 import de.fhb.view.MonitorInsertDataView;
 import de.fhb.view.MonitorShowDataView;
 import de.fhb.view.ViewListener;
+import eu.hansolo.enzo.notification.Notification;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -39,7 +40,7 @@ public class Presenter extends Application implements ViewListener, StationListe
 
     public Presenter(String[] args) {
         super();
-        this.stationBo = StationBo.getInstance(this);
+        //this.stationBo = StationBo.getInstance(this);
         launch(args);
     }
 
@@ -108,6 +109,9 @@ public class Presenter extends Application implements ViewListener, StationListe
         super.stop();
         // randomizer.setShouldRun(false);
         IceCreamRandomizerTask.setShouldRun(false);
+
+        Notification.Notifier.INSTANCE.stop();
+
     }
 
     // Methods for ViewListener
@@ -142,6 +146,8 @@ public class Presenter extends Application implements ViewListener, StationListe
             @Override
             public void run() {
                 monitorView.updateStationList(stationBo.findAll());
+                Notification.Notifier.INSTANCE.notifyInfo("Info", "New Station added");
+
             }
         });
     }
