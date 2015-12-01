@@ -81,7 +81,7 @@ public class Presenter extends Application implements ViewListener, StationListe
 
             String fxmlFile = "/fxml/monitorInsertDataView.fxml";
             log.debug(String.format("Loading FXML for MonitorInsertDataView from: %s", fxmlFile));
-            ;
+
             FXMLLoader loader = new FXMLLoader();
             monitorView = new MonitorInsertDataView(this);
             loader.setController(monitorView);
