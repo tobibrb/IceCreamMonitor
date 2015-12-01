@@ -80,6 +80,7 @@ public class Presenter extends Application implements ViewListener, StationListe
             this.primaryStage.show();
 
             viewNumber = 1;
+            monitorView.updateStationList(stationBo.findAll());
         } else if (viewNumber == 1) {
 
             String fxmlFile = "/fxml/monitorInsertDataView.fxml";
@@ -98,6 +99,7 @@ public class Presenter extends Application implements ViewListener, StationListe
             this.primaryStage.setScene(scene);
             this.primaryStage.show();
             viewNumber = 0;
+            monitorView.updateStationList(stationBo.findAll());
         }
     }
 
@@ -128,6 +130,7 @@ public class Presenter extends Application implements ViewListener, StationListe
         if (station.getName() != null) {
             stationBo.updateStationName(station.getId(), station.getName());
         }
+        monitorView.updateStationList(stationBo.findAll());
     }
 
     // Methods for StationListener
