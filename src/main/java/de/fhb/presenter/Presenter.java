@@ -106,7 +106,8 @@ public class Presenter extends Application implements ViewListener, StationListe
     @Override
     public void stop() throws Exception {
         super.stop();
-        randomizer.setShouldRun(false);
+        // randomizer.setShouldRun(false);
+        IceCreamRandomizerTask.setShouldRun(false);
     }
 
     // Methods for ViewListener
