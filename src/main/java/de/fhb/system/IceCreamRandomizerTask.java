@@ -42,7 +42,7 @@ public class IceCreamRandomizerTask extends TimerTask implements StationListener
             stationBo.addStation(name, randomNum);
             log.debug("Created Station: " + name);
         if (shouldRun) {
-            int delay = (5 + new Random().nextInt(5)) * 1000;
+            int delay = (10 + new Random().nextInt(5)) * 1000;
             timer.schedule(new IceCreamRandomizerTask(), delay);
         }
 
