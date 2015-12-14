@@ -29,10 +29,10 @@ import java.util.ResourceBundle;
 
 /**
  * JavaFX Klasse zum Anzeigen der InsertDataView.
- *
+ * <p>
  * Created on 23.11.2015.
  */
-public class MonitorInsertDataView extends AMonitorView implements Initializable {
+public class MonitorInsertDataView extends AMonitorView {
 
     // JavaFX Elemente
     @FXML
@@ -203,11 +203,8 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
     /**
      * Überprüft ob Datums String richtiges Format hat.
      *
-     * @param date
-     * als String.
-     *
-     * @return
-     * <code>true</code> falls String korrekt oder
+     * @param date als String.
+     * @return <code>true</code> falls String korrekt oder
      * <code>false</code> falls String nicht dem Format entspricht.
      */
     private boolean validateDate(String date) {
@@ -221,11 +218,8 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
      * Prüft ob der übergebende String zu einem Integer geparst werden kann und größer als 0 ist.
      * Zeigt Tooltip falls beim Parsen ein Fehler auftritt.
      *
-     * @param value
-     * String der geparst werden soll.
-     *
-     * @return
-     * geparster Integer wert oder <code>null</code>
+     * @param value String der geparst werden soll.
+     * @return geparster Integer wert oder <code>null</code>
      */
     private Integer validateActualValue(String value) {
         Integer returnInt = null;
@@ -264,10 +258,8 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
     /**
      * Aktualisiert die ListView. Wird vom Presenter aufgerufen.
      *
+     * @param list Liste von StationVo Objekten, die in der View angezeigt werden sollen
      * @see Presenter#onStationChanged()
-     *
-     * @param list
-     * Liste von StationVo Objekten, die in der View angezeigt werden sollen
      */
 
     public void updateStationList(List<StationVo> list) {
@@ -279,12 +271,8 @@ public class MonitorInsertDataView extends AMonitorView implements Initializable
     /**
      * Konstruktor für die MonitorInsertDataView Klasse.
      *
-     * @param obj
-     * Die aufrufende Klasse. Diese muss den ViewListener implementieren.
-     *
-     * @throws ClassCastException
-     * wenn die übergebene Klasse nicht den ViewListener implementiert.
-     *
+     * @param obj Die aufrufende Klasse. Diese muss den ViewListener implementieren.
+     * @throws ClassCastException wenn die übergebene Klasse nicht den ViewListener implementiert.
      * @see ViewListener
      */
     public MonitorInsertDataView(Object obj) {
