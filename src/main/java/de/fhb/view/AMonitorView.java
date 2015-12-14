@@ -5,7 +5,10 @@ import javafx.fxml.Initializable;
 
 import java.util.List;
 
-public abstract class AMonitorView implements Initializable{
+/**
+ * Abstratkte View Klasse.
+ */
+public abstract class AMonitorView implements Initializable {
 
     protected ViewListener listener;
 
@@ -13,7 +16,13 @@ public abstract class AMonitorView implements Initializable{
         onAttach(obj);
     }
 
-    protected void onAttach(Object obj) {
+    /**
+     * Prüft ob die Aufrufende Klasse den ViewListener implementiert.
+     *
+     * @param obj die aufrufende Klasse.
+     * @throws ClassCastException falls die aufrufende Klasse nicht den ViewListener implemntiert.
+     */
+    protected void onAttach(Object obj) throws ClassCastException {
         try {
             listener = (ViewListener) obj;
         } catch (Exception e) {

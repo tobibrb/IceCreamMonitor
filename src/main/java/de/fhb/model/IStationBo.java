@@ -4,20 +4,20 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Tobi on 30.11.2015.
+ * Interface für alle StationBo's. Diese Methoden müssen immer bereitgestellt werden.
  */
 public interface IStationBo {
 
-    public List<StationVo> findAll();
+    List<StationVo> findAll();
 
-    public StationVo findStationById(Long id);
+    StationVo findStationById(Long id);
 
-    public void updateStationDate(Long id, Date date);
+    void updateStationDate(Long id, Date date);
 
-    public void updateStationValue(Long id, Integer actualValue);
+    void updateStationValue(Long id, Integer actualValue);
 
-    public void updateStationName(Long id, String name);
+    void updateStationName(Long id, String name);
 
-    public void addStation(String name, Integer targetValue);
+    void addStation(String name, Integer targetValue);
 
 }
