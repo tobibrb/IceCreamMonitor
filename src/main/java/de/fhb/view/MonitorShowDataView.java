@@ -32,15 +32,15 @@ public class MonitorShowDataView extends AMonitorView implements Initializable {
     @FXML
     private TableView<StationVo> tableView;
     @FXML
-    private TableColumn<StationVo,String> tableColumName;
+    private TableColumn<StationVo, String> tableColumName;
     @FXML
-    private TableColumn<StationVo,String> tableColumDate;
+    private TableColumn<StationVo, String> tableColumDate;
     @FXML
-    private TableColumn<StationVo,String> tableColumTarget;
+    private TableColumn<StationVo, String> tableColumTarget;
     @FXML
-    private TableColumn<StationVo,String> tableColumActual;
+    private TableColumn<StationVo, String> tableColumActual;
     @FXML
-    private TableColumn<StationVo,String> tableColumVariance;
+    private TableColumn<StationVo, String> tableColumVariance;
     @FXML
     private ChoiceBox<String> choiceBox;
 
@@ -51,9 +51,14 @@ public class MonitorShowDataView extends AMonitorView implements Initializable {
         super(obj);
     }
 
+    /**
+     * Methode zum Updaten der Liste der von Stationen in der View
+     *
+     * @param list Liste aller Stationen
+     */
     @Override
     public void updateStationList(List<StationVo> list) {
-        if (list !=null) {
+        if (list != null) {
             observableList = FXCollections.observableArrayList(list);
 
         }
@@ -65,72 +70,79 @@ public class MonitorShowDataView extends AMonitorView implements Initializable {
 
     }
 
-    public void filterTable(int choice){
-        FilteredList<StationVo> fList = new FilteredList<StationVo>(observableList, p-> true);
-            fList.setPredicate(station ->{
-                   switch (choice) {
-                       case 0:
-                           return true;
-                       case 1:
-                           return station.getActualValue()!=null && station.getActualValue() * 100 / station.getTargetValue() <= 90;
-                       case 2:
-                           return station.getActualValue()!=null && station.getActualValue() * 100 / station.getTargetValue() > 90 && station.getActualValue() * 100 / station.getTargetValue() < 105;
-                       case 3:
-                           return station.getActualValue()!=null && station.getActualValue() * 100 / station.getTargetValue() >= 105;
-                       default:
-                           return false;
-                   }
-            });
+    /**
+     * Die Methode verändert die Tabelle hinsichtlich der anzuzeigenden Elemente.
+     * Sie Filtert je nach Auswahl.
+     *
+     * @param choice Auswahl als Zahlenwert von 0-3
+     */
+    public void filterTable(int choice) {
+        FilteredList<StationVo> fList = new FilteredList<StationVo>(observableList, p -> true);
+        fList.setPredicate(station -> {
+            switch (choice) {
+                case 0:
+                    return true;
+                case 1:
+                    return station.getActualValue() != null && station.getActualValue() * 100 / station.getTargetValue() <= 90;
+                case 2:
+                    return station.getActualValue() != null && station.getActualValue() * 100 / station.getTargetValue() > 90 && station.getActualValue() * 100 / station.getTargetValue() < 105;
+                case 3:
+                    return station.getActualValue() != null && station.getActualValue() * 100 / station.getTargetValue() >= 105;
+                default:
+                    return false;
+            }
+        });
         tableView.setItems(fList);
 
 
     }
 
+    /**
+     * Methode erstellt alle nötigen Komponenten der View.
+     * So wie Listen zur Darstellung in der Tabelle, zur Auswahl und Listener
+     * @param location
+     * @param resources
+     */
     public void initialize(URL location, ResourceBundle resources) {
 
-        tableColumName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<StationVo, String>, ObservableValue<String>>()
-        {
+        tableColumName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<StationVo, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<StationVo, String> param) {
                 return param.getValue().nameSSPProperty();
             }
         });
-        tableColumDate.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<StationVo, String>, ObservableValue<String>>()
-        {
+        tableColumDate.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<StationVo, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<StationVo, String> param) {
                 return param.getValue().dateSSPProperty();
             }
         });
-        tableColumTarget.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<StationVo, String>, ObservableValue<String>>()
-        {
+        tableColumTarget.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<StationVo, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<StationVo, String> param) {
                 return param.getValue().targetSSPProperty();
             }
         });
-        tableColumActual.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<StationVo, String>, ObservableValue<String>>()
-        {
+        tableColumActual.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<StationVo, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<StationVo, String> param) {
                 return param.getValue().actualSSPProperty();
             }
         });
-        tableColumVariance.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<StationVo, String>, ObservableValue<String>>()
-        {
+        tableColumVariance.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<StationVo, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<StationVo, String> param) {
                 return param.getValue().varianceSSPProperty();
             }
         });
-        ObservableList<String> observableChoichList = FXCollections.observableArrayList(Arrays.asList("Alle","-10% Abweichung","Zwischen -10% und +5%", "über +5%"));
+        ObservableList<String> observableChoichList = FXCollections.observableArrayList(Arrays.asList("Alle", "-10% Abweichung", "Zwischen -10% und +5%", "über +5%"));
         this.choiceBox.setItems(observableChoichList);
         this.choiceBox.getSelectionModel().selectFirst();
         this.choiceBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (newValue != null){
-                    switch (newValue){
+                if (newValue != null) {
+                    switch (newValue) {
                         case "-10% Abweichung":
                             filterTable(1);
                             break;
