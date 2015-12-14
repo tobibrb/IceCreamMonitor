@@ -3,7 +3,7 @@ package de.fhb.view;
 import de.fhb.model.StationVo;
 
 /**
- * Created by Notebook on 23.11.2015.
+ * Interface zum erkenne von Änderung der View, wie Wechsel der View oder ändern der Daten durch den Benutzer über die View.
  */
 public interface ViewListener {
 
