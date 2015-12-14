@@ -27,7 +27,7 @@ public class StationVo implements Serializable {
         this.actualValue = actualValue;
         this.variance = variance;
         this.date = date;
-
+        //Die SimpleStringProperties werden für die Zuweisung der Inhalte in der Tabelle benötigt.
         this.nameSSP = new SimpleStringProperty(name);
         this.targetSSP = new SimpleStringProperty(targetValue.toString());
         this.actualSSP = new SimpleStringProperty(actualValue.toString());
